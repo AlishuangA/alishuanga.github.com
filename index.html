@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+    <script src="jquery-1.10.1.min.js"></script>
+    <style>
+        body{
+	        margin:0 auto;
+	        line-height: 1;
+        }
+        #banner{
+	        position: relative;
+	        width: 590px;
+	        height: 470PX;
+	        margin: 0 auto;
+        }
+        .item{
+	        display: none;
+	        width: 590px;
+	        height: 470PX;
+	        position: absolute;
+        }
+        .bth-list{
+	        position: absolute;
+	        width: 152px;
+	        height: px;
+	        left: 40px;
+	        bottom: 20px;
+        }
+        .bth{
+	        display: block;
+	        opacity: 0.5;
+	        float: left;
+	        border: 5px solid #F0EDED;
+	        border-radius: 50%;
+	        margin-right: 8px;
+        }
+        .active{
+	        opacity: 4;
+	        border-color: #FFFFFF;
+	        border:7px soild #F0EDED;
+        }
+        .tab{
+	        position: absolute;
+	        width: 30px;
+	        height: 40px;
+	        font-size: 20px;
+	        line-height: 40px;
+	        cursor: pointer;
+	        top: 47%;
+	        text-align: center;
+	        color: white;
+	        opacity: 0.5;
+	        background-color: rgba(0,0,0,.5);
+        }
+        .tab:hover{
+	        opacity: 0.5;
+	        background: black;
+        }
+        .left{
+	        font-size: small;
+	        font-weight: bold;
+	        border-radius:0 20px 20px 0;
+        }
+        .right{
+	        right: 0px;
+	        font-size: small;
+	        font-weight: bold;
+	        border-radius:20px 0 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <!--外层div-->
+<div id="banner">
+    <div class="warp">
+        <a href="#" class="item" style="display: block;"><img src="p1.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p2.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p3.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p4.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p5.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p6.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p7.jpg" width="590" height="470" alt="" /></a>
+        <a href="#" class="item"><img src="p8.jpg" width="590" height="470" alt="" /></a>
+    </div>
+    <!--点击按钮列表-->
+    <div class="bth-list">
+        <div class="bth active"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+        <div class="bth"></div>
+    </div>
+    <!--左按钮-->
+    <div class="tab left"><</div>
+    <!--右按钮-->
+    <div class="tab right">></div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+    var index = 0; 
+    var stop = false; 
+    var $li = $("#banner").find(".warp").children(".item"); 
+    var $page = $("#banner").find(".bth-list").children(".bth"); 
+    $page.hover(function() {
+        
+        index = $(this).index(); 
+        $(this).addClass("active").stop(true,true).siblings().removeClass("active"); 
+        $li.eq(index).stop(true,true).fadeIn(1000).siblings().fadeOut(1000);
+    });
+    //左边点击按钮
+    $(".left").click(function() {
+        clearInterval(timer);
+        index--;
+        if(index < 0) {
+            index = $li.length-1;
+        }
+        $li.eq(index).stop(true, true).fadeIn().siblings().fadeOut();
+        $page.eq(index).addClass("active").stop(true, true).siblings().removeClass("active");
+    });
+    //右边点击按钮
+    $(".right").click(function(){
+        clearInterval(timer);
+        index++;
+        if(index > $li.length-1) {
+            index = 0;
+        }
+        $li.eq(index).stop(true,true).fadeIn().siblings().fadeOut();
+        $page.eq(index).addClass("active").stop(true, true).siblings().removeClass("active");
+    });
+    //自动轮播图片
+    var timer = setInterval(function() {
+        if(stop) return;
+        index++;
+        if(index > $li.length-1) {
+            index = 0;
+        }
+        $li.eq(index).stop(true, true).fadeIn().siblings().fadeOut();
+        $page.eq(index).addClass("active").stop(true, true).siblings().removeClass("active");
+    },3000);
+    //鼠标移入图片内，自动轮播停止
+    $("#banner").mousemove(function() {
+        clearInterval(timer);
+    }).mouseout(function() {
+        timer = setInterval(function() {
+            if(stop) return;
+            index++;
+            if(index > $li.length-1) {
+                index = 0;
+            }
+            $li.eq(index).stop(true, true).fadeIn().siblings().fadeOut();
+            $page.eq(index).addClass("active").stop(true, true).siblings().removeClass("active");
+        },3000);
+    });
+});
+</script>
